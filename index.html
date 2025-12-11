@@ -1,0 +1,1717 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carlos Africano - Mis Cuentas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #37CF9C;
+            --secondary-color: #166088;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --border-radius: 10px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px 15px;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid white;
+        }
+
+        .app-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .total-display {
+            background-color: white;
+            color: #333;
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            font-weight: bold;
+            text-align: center;
+            box-shadow: var(--box-shadow);
+            margin-top: 10px;
+        }
+
+        .total-amount {
+            font-size: 1.8rem;
+            color: var(--secondary-color);
+        }
+
+        .tabs {
+            display: flex;
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px 10px;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid var(--primary-color);
+            color: var(--primary-color);
+            background-color: rgba(74, 111, 165, 0.05);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .account-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .account-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            box-shadow: var(--box-shadow);
+            border-left: 5px solid var(--primary-color);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .account-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .account-card.nequi {
+            border-left-color: #6f42c1;
+        }
+
+        .account-card.bancolombia {
+            border-left-color: #118ab2;
+        }
+
+        .account-card.daviplata {
+            border-left-color: #06d6a0;
+        }
+
+        .account-card.efectivo {
+            border-left-color: #ffd166;
+        }
+
+        .account-name {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .account-icon {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        .account-balance {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .positive {
+            color: var(--success-color);
+        }
+
+        .negative {
+            color: var(--danger-color);
+        }
+
+        .transactions-list {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .transaction-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-info {
+            flex: 1;
+        }
+
+        .transaction-concept {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .transaction-date {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .transaction-amount {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .transaction-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .edit-btn {
+            color: var(--primary-color);
+            background-color: rgba(74, 111, 165, 0.1);
+        }
+
+        .delete-btn {
+            color: var(--danger-color);
+            background-color: rgba(220, 53, 69, 0.1);
+        }
+
+        .floating-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            border: none;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        .form-input:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: #e9ecef;
+            color: #333;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .backup-section {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 20px;
+        }
+
+        .backup-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .backup-option {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            border: 2px dashed #ddd;
+            cursor: pointer;
+        }
+
+        .backup-option:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(74, 111, 165, 0.05);
+        }
+
+        .warning-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-top: 15px;
+        }
+
+        .file-info {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: var(--border-radius);
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            z-index: 3000;
+            max-width: 300px;
+        }
+
+        /* Nuevos estilos para el detalle de cuenta */
+        .account-detail-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+
+        .account-detail-icon {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .account-detail-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .account-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 20px;
+            background-color: white;
+        }
+
+        .stat-card {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .account-detail-transactions {
+            padding: 20px;
+            background-color: white;
+        }
+
+        .account-detail-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #ccc;
+        }
+
+        /* Estilos para el modal de cuenta */
+        .account-modal-content {
+            max-width: 600px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Estilos para filtro de mes */
+        .month-filter {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: white;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 15px;
+        }
+
+        .month-nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .month-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .month-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .current-month {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            background-color: white;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Estilos para resumen mensual */
+        .month-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            background-color: white;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 15px;
+        }
+
+        .summary-card {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .summary-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .summary-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        @media (max-width: 600px) {
+            .account-cards {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .form-buttons {
+                flex-direction: column;
+            }
+            
+            .backup-options {
+                flex-direction: column;
+            }
+            
+            .account-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .month-filter {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .month-summary {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado -->
+    <header>
+        <div class="logo-container">
+            <img src="Africano_logo.png" alt="Carlos Africano Logo" class="logo-img" id="userLogo">
+            <div>
+                <div class="app-name">Carlos Africano</div>
+                <div style="font-size: 0.8rem;">CONTROL INGRESOS Y GASTOS</div>
+            </div>
+        </div>
+        <div class="total-display">
+            <div>Total General</div>
+            <div class="total-amount" id="totalGeneral">$ 0</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Pestañas -->
+        <div class="tabs">
+            <div class="tab active" data-tab="resumen"><i class="fas fa-chart-pie"></i> Resumen</div>
+            <div class="tab" data-tab="transacciones"><i class="fas fa-list"></i> Transacciones</div>
+            <div class="tab" data-tab="cuentas"><i class="fas fa-wallet"></i> Cuentas</div>
+            <div class="tab" data-tab="respaldos"><i class="fas fa-database"></i> Respaldos</div>
+        </div>
+
+        <!-- Resumen -->
+        <div class="tab-content active" id="resumen">
+            <div class="account-cards">
+                <div class="account-card nequi" data-account="nequi">
+                    <div class="account-name">
+                        <img src="nequi-icon.png" alt="Nequi" class="account-icon">
+                        Nequi
+                    </div>
+                    <div class="account-balance positive" id="nequiBalance">$ 0</div>
+                </div>
+                
+                <div class="account-card bancolombia" data-account="bancolombia">
+                    <div class="account-name">
+                        <img src="bancolombia-icon.png" alt="Bancolombia" class="account-icon">
+                        Bancolombia
+                    </div>
+                    <div class="account-balance positive" id="bancolombiaBalance">$ 0</div>
+                </div>
+                
+                <div class="account-card daviplata" data-account="daviplata">
+                    <div class="account-name">
+                        <img src="daviplata-icon.png" alt="Daviplata" class="account-icon">
+                        Daviplata
+                    </div>
+                    <div class="account-balance positive" id="daviplataBalance">$ 0</div>
+                </div>
+                
+                <div class="account-card efectivo" data-account="efectivo">
+                    <div class="account-name">
+                        <img src="efectivo-icon.png" alt="Efectivo" class="account-icon">
+                        Efectivo
+                    </div>
+                    <div class="account-balance positive" id="efectivoBalance">$ 0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transacciones -->
+        <div class="tab-content" id="transacciones">
+            <!-- Filtro de mes -->
+            <div class="month-filter">
+                <div class="month-nav">
+                    <button class="month-btn" id="prevMonthBtn"><i class="fas fa-chevron-left"></i></button>
+                    <div class="current-month" id="currentMonthDisplay">Enero 2024</div>
+                    <button class="month-btn" id="nextMonthBtn"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="filter-options">
+                    <button class="filter-btn" data-filter="all">Todas</button>
+                    <button class="filter-btn active" data-filter="current">Mes Actual</button>
+                </div>
+            </div>
+
+            <!-- Resumen mensual -->
+            <div class="month-summary" id="monthSummary" style="display: none;">
+                <div class="summary-card">
+                    <div class="summary-label">Total Mes</div>
+                    <div class="summary-value positive" id="monthTotal">$ 0</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">Ingresos</div>
+                    <div class="summary-value positive" id="monthIncome">$ 0</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">Egresos</div>
+                    <div class="summary-value negative" id="monthExpense">$ 0</div>
+                </div>
+            </div>
+
+            <!-- Lista de transacciones -->
+            <div class="transactions-list" id="transactionsList">
+                <div class="empty-state">
+                    <i class="fas fa-exchange-alt"></i>
+                    <h3>No hay transacciones</h3>
+                    <p>Añade tu primera transacción usando el botón +</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cuentas -->
+        <div class="tab-content" id="cuentas">
+            <div class="account-cards" id="accountsList">
+                <!-- Las cuentas se cargarán dinámicamente aquí -->
+            </div>
+        </div>
+
+        <!-- Respaldos -->
+        <div class="tab-content" id="respaldos">
+            <div class="backup-section">
+                <h3><i class="fas fa-envelope"></i> Respaldar por Email</h3>
+                <p>Envía tus datos por correo electrónico para tener un respaldo seguro.</p>
+                
+                <div class="backup-options">
+                    <div class="backup-option" onclick="sendBackupByEmail()">
+                        <i class="fas fa-paper-plane" style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: 10px;"></i>
+                        <div>Enviar por Email</div>
+                        <div style="font-size: 0.85rem; color: #666; margin-top: 5px;">
+                            Envía los datos a tu correo como archivo adjunto
+                        </div>
+                    </div>
+                    
+                    <div class="backup-option" onclick="downloadBackup()">
+                        <i class="fas fa-download" style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: 10px;"></i>
+                        <div>Descargar CSV</div>
+                        <div style="font-size: 0.85rem; color: #666; margin-top: 5px;">
+                            Descarga un archivo CSV para guardar en tu dispositivo
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="backup-section">
+                <h3><i class="fas fa-file-import"></i> Importar Datos</h3>
+                <p>Carga un archivo CSV para restaurar tus datos desde un respaldo.</p>
+                
+                <div class="warning-box">
+                    <strong>Advertencia:</strong> Importar datos reemplazará todos los datos actuales.
+                </div>
+                
+                <div class="form-group" style="margin-top: 20px;">
+                    <label class="form-label">Seleccionar archivo de respaldo (.csv)</label>
+                    <input type="file" class="form-input" id="backupFile" accept=".csv,.txt">
+                    <div class="file-info" id="fileInfo" style="display: none;">
+                        Archivo seleccionado: <span id="fileName"></span>
+                    </div>
+                </div>
+                
+                <div class="form-buttons">
+                    <button type="button" class="btn btn-secondary" onclick="clearFileInput()">
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="importFromFile()" id="importBtn" disabled>
+                        <i class="fas fa-upload"></i> Importar Datos
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón flotante -->
+    <div class="floating-button" id="addTransactionBtn">
+        <i class="fas fa-plus"></i>
+    </div>
+
+    <!-- Modal para transacción -->
+    <div class="modal" id="transactionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Nueva Transacción</h2>
+                <i class="fas fa-times close-modal" style="cursor: pointer;"></i>
+            </div>
+            <div class="modal-body">
+                <form id="transactionForm">
+                    <input type="hidden" id="transactionId">
+                    <input type="hidden" id="originalAccount">
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="account">Cuenta</label>
+                        <select class="form-select" id="account" required>
+                            <option value="">Selecciona una cuenta</option>
+                            <option value="nequi">Nequi</option>
+                            <option value="bancolombia">Bancolombia</option>
+                            <option value="daviplata">Daviplata</option>
+                            <option value="efectivo">Efectivo</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="type">Tipo de Transacción</label>
+                        <select class="form-select" id="type" required>
+                            <option value="">Selecciona un tipo</option>
+                            <option value="ingreso">Ingreso</option>
+                            <option value="egreso">Egreso</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="amount">Monto</label>
+                        <input type="number" class="form-input" id="amount" placeholder="Ej. 50000" required min="1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="concept">Concepto</label>
+                        <input type="text" class="form-input" id="concept" placeholder="Ej. Pago de servicios" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="date">Fecha</label>
+                        <input type="date" class="form-input" id="date" required>
+                    </div>
+                    
+                    <div class="form-buttons">
+                        <button type="button" class="btn btn-secondary close-modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="submitTransactionBtn">Guardar</button>
+                        <button type="button" class="btn btn-danger" id="deleteTransactionBtn" style="display: none;">Eliminar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para detalle de cuenta -->
+    <div class="modal" id="accountDetailModal">
+        <div class="modal-content account-modal-content">
+            <div class="account-detail-header">
+                <img src="" alt="" class="account-detail-icon" id="detailAccountIcon">
+                <div class="account-detail-name" id="detailAccountName">Cuenta</div>
+                <button class="close-btn close-account-detail"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <div class="account-stats">
+                <div class="stat-card">
+                    <div class="stat-label">Saldo Actual</div>
+                    <div class="stat-value" id="detailAccountBalance">$ 0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Ingresos</div>
+                    <div class="stat-value positive" id="detailAccountIncome">$ 0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Egresos</div>
+                    <div class="stat-value negative" id="detailAccountExpense">$ 0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">N° Transacciones</div>
+                    <div class="stat-value" id="detailTransactionCount">0</div>
+                </div>
+            </div>
+            
+            <div class="account-detail-transactions">
+                <div class="account-detail-title">Últimas Transacciones</div>
+                <div id="detailAccountTransactions">
+                    <div class="empty-state">
+                        <i class="fas fa-exchange-alt"></i>
+                        <h3>No hay transacciones</h3>
+                        <p>Esta cuenta aún no tiene movimientos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Datos iniciales vacíos
+        let accounts = {
+            nequi: {
+                name: "Nequi",
+                icon: "nequi-icon.png",
+                color: "nequi",
+                balance: 0,
+                transactions: []
+            },
+            bancolombia: {
+                name: "Bancolombia",
+                icon: "bancolombia-icon.png",
+                color: "bancolombia",
+                balance: 0,
+                transactions: []
+            },
+            daviplata: {
+                name: "Daviplata",
+                icon: "daviplata-icon.png",
+                color: "daviplata",
+                balance: 0,
+                transactions: []
+            },
+            efectivo: {
+                name: "Efectivo",
+                icon: "efectivo-icon.png",
+                color: "efectivo",
+                balance: 0,
+                transactions: []
+            }
+        };
+
+        let isEditing = false;
+        let currentEditId = null;
+        
+        // Variables para filtro de mes
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+        let showAllTransactions = false;
+
+        // Cargar datos al iniciar
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedAccounts = localStorage.getItem('accountsData');
+            if (savedAccounts) {
+                accounts = JSON.parse(savedAccounts);
+            }
+            
+            document.getElementById('date').valueAsDate = new Date();
+            updateUI();
+            loadTransactions();
+            loadAccountsTab();
+            setupEventListeners();
+            setupBackupFileListener();
+            updateMonthDisplay();
+            
+            // Configurar iconos
+            setupIcons();
+        });
+
+        // Configurar iconos
+        function setupIcons() {
+            const icons = ['nequi-icon.png', 'bancolombia-icon.png', 'daviplata-icon.png', 'efectivo-icon.png'];
+            icons.forEach(icon => {
+                const img = new Image();
+                img.src = icon;
+                img.onerror = function() {
+                    console.log('No se pudo cargar el icono:', icon);
+                };
+            });
+        }
+
+        function setupEventListeners() {
+            // Tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                    document.getElementById(this.getAttribute('data-tab')).classList.add('active');
+                    
+                    // Si es la pestaña de transacciones, actualizar
+                    if (this.getAttribute('data-tab') === 'transacciones') {
+                        loadTransactions();
+                        updateMonthDisplay();
+                    }
+                    
+                    // Si es la pestaña de cuentas, cargarlas
+                    if (this.getAttribute('data-tab') === 'cuentas') {
+                        loadAccountsTab();
+                    }
+                });
+            });
+            
+            // Botón para añadir transacción
+            document.getElementById('addTransactionBtn').addEventListener('click', openTransactionModal);
+            
+            // Cerrar modales
+            document.querySelectorAll('.close-modal').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.getElementById('transactionModal').classList.remove('active');
+                    resetTransactionForm();
+                });
+            });
+            
+            document.querySelectorAll('.close-account-detail').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.getElementById('accountDetailModal').classList.remove('active');
+                });
+            });
+            
+            // Formulario
+            document.getElementById('transactionForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (isEditing) {
+                    updateTransaction();
+                } else {
+                    addTransaction();
+                }
+            });
+            
+            // Botón de eliminar
+            document.getElementById('deleteTransactionBtn').addEventListener('click', deleteTransaction);
+            
+            // Hacer clic en las tarjetas de cuenta del resumen
+            document.querySelectorAll('.account-card[data-account]').forEach(card => {
+                card.addEventListener('click', function() {
+                    const accountKey = this.getAttribute('data-account');
+                    openAccountDetail(accountKey);
+                });
+            });
+            
+            // Navegación de meses
+            document.getElementById('prevMonthBtn').addEventListener('click', function() {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                updateMonthDisplay();
+                loadTransactions();
+            });
+            
+            document.getElementById('nextMonthBtn').addEventListener('click', function() {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                updateMonthDisplay();
+                loadTransactions();
+            });
+            
+            // Filtros de transacciones
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const filter = this.getAttribute('data-filter');
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    if (filter === 'all') {
+                        showAllTransactions = true;
+                        // Volver al mes actual cuando se selecciona "todas"
+                        const now = new Date();
+                        currentMonth = now.getMonth();
+                        currentYear = now.getFullYear();
+                        updateMonthDisplay();
+                    } else {
+                        showAllTransactions = false;
+                    }
+                    loadTransactions();
+                });
+            });
+        }
+
+        function updateMonthDisplay() {
+            const monthNames = [
+                'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+            ];
+            document.getElementById('currentMonthDisplay').textContent = 
+                `${monthNames[currentMonth]} ${currentYear}`;
+        }
+
+        function setupBackupFileListener() {
+            document.getElementById('backupFile').addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    document.getElementById('fileName').textContent = this.files[0].name;
+                    document.getElementById('fileInfo').style.display = 'block';
+                    document.getElementById('importBtn').disabled = false;
+                } else {
+                    document.getElementById('fileInfo').style.display = 'none';
+                    document.getElementById('importBtn').disabled = true;
+                }
+            });
+        }
+
+        function updateUI() {
+            let totalGeneral = 0;
+            
+            for (const accountKey in accounts) {
+                const account = accounts[accountKey];
+                let balance = 0;
+                
+                account.transactions.forEach(transaction => {
+                    balance += transaction.amount;
+                });
+                
+                account.balance = balance;
+                totalGeneral += balance;
+                
+                const balanceElement = document.getElementById(`${accountKey}Balance`);
+                if (balanceElement) {
+                    balanceElement.textContent = `$ ${formatNumber(balance)}`;
+                    balanceElement.className = `account-balance ${balance >= 0 ? 'positive' : 'negative'}`;
+                }
+            }
+            
+            document.getElementById('totalGeneral').textContent = `$ ${formatNumber(totalGeneral)}`;
+        }
+
+        function loadTransactions() {
+            const transactionsList = document.getElementById('transactionsList');
+            let allTransactions = [];
+            let monthIncome = 0;
+            let monthExpense = 0;
+            
+            for (const accountKey in accounts) {
+                const account = accounts[accountKey];
+                account.transactions.forEach(transaction => {
+                    const transactionDate = new Date(transaction.date);
+                    const transactionMonth = transactionDate.getMonth();
+                    const transactionYear = transactionDate.getFullYear();
+                    
+                    // Filtrar por mes si no se muestran todas
+                    if (showAllTransactions || (transactionMonth === currentMonth && transactionYear === currentYear)) {
+                        allTransactions.push({
+                            ...transaction,
+                            account: accountKey,
+                            accountName: account.name
+                        });
+                        
+                        // Calcular resumen mensual
+                        if (transactionMonth === currentMonth && transactionYear === currentYear) {
+                            if (transaction.amount > 0) {
+                                monthIncome += transaction.amount;
+                            } else {
+                                monthExpense += Math.abs(transaction.amount);
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Mostrar/ocultar resumen mensual
+            const monthSummary = document.getElementById('monthSummary');
+            if (!showAllTransactions) {
+                monthSummary.style.display = 'grid';
+                document.getElementById('monthTotal').textContent = `$ ${formatNumber(monthIncome - monthExpense)}`;
+                document.getElementById('monthTotal').className = `summary-value ${(monthIncome - monthExpense) >= 0 ? 'positive' : 'negative'}`;
+                document.getElementById('monthIncome').textContent = `$ ${formatNumber(monthIncome)}`;
+                document.getElementById('monthExpense').textContent = `$ ${formatNumber(monthExpense)}`;
+            } else {
+                monthSummary.style.display = 'none';
+            }
+            
+            allTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            if (allTransactions.length > 0) {
+                transactionsList.innerHTML = '';
+                allTransactions.forEach(transaction => {
+                    const amountClass = transaction.amount >= 0 ? 'positive' : 'negative';
+                    const amountSign = transaction.amount >= 0 ? '+' : '';
+                    const formattedDate = formatDate(transaction.date);
+                    
+                    const transactionElement = document.createElement('div');
+                    transactionElement.className = 'transaction-item';
+                    transactionElement.innerHTML = `
+                        <div class="transaction-info">
+                            <div class="transaction-concept">${transaction.concept}</div>
+                            <div class="transaction-date">${formattedDate} • ${transaction.accountName}</div>
+                        </div>
+                        <div class="transaction-amount ${amountClass}">
+                            ${amountSign}$ ${formatNumber(transaction.amount)}
+                        </div>
+                        <div class="transaction-actions">
+                            <button class="action-btn edit-btn" onclick="editTransaction('${transaction.account}', ${transaction.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn delete-btn" onclick="showDeleteConfirmation('${transaction.account}', ${transaction.id}, '${transaction.concept}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    transactionsList.appendChild(transactionElement);
+                });
+            } else {
+                transactionsList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exchange-alt"></i>
+                        <h3>No hay transacciones</h3>
+                        <p>${showAllTransactions ? 'No hay transacciones registradas' : 'No hay transacciones este mes'}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Cargar la pestaña de cuentas
+        function loadAccountsTab() {
+            const accountsList = document.getElementById('accountsList');
+            accountsList.innerHTML = '';
+            
+            for (const accountKey in accounts) {
+                const account = accounts[accountKey];
+                const balance = account.balance;
+                const balanceClass = balance >= 0 ? 'positive' : 'negative';
+                
+                // Calcular estadísticas
+                let totalIncome = 0;
+                let totalExpense = 0;
+                let transactionCount = account.transactions.length;
+                
+                account.transactions.forEach(transaction => {
+                    if (transaction.amount > 0) {
+                        totalIncome += transaction.amount;
+                    } else {
+                        totalExpense += Math.abs(transaction.amount);
+                    }
+                });
+                
+                const accountCard = document.createElement('div');
+                accountCard.className = `account-card ${account.color}`;
+                accountCard.setAttribute('data-account', accountKey);
+                accountCard.innerHTML = `
+                    <div class="account-name">
+                        <img src="${account.icon}" alt="${account.name}" class="account-icon">
+                        ${account.name}
+                    </div>
+                    <div class="account-balance ${balanceClass}">$ ${formatNumber(balance)}</div>
+                    <div style="margin-top: 10px; font-size: 0.85rem; color: #666;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span>Ingresos:</span>
+                            <span class="positive">$ ${formatNumber(totalIncome)}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span>Egresos:</span>
+                            <span class="negative">$ ${formatNumber(totalExpense)}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Transacciones:</span>
+                            <span>${transactionCount}</span>
+                        </div>
+                    </div>
+                `;
+                
+                accountCard.addEventListener('click', function() {
+                    openAccountDetail(accountKey);
+                });
+                
+                accountsList.appendChild(accountCard);
+            }
+        }
+
+        // Mostrar detalle de cuenta
+        function openAccountDetail(accountKey) {
+            const account = accounts[accountKey];
+            
+            // Configurar encabezado
+            document.getElementById('detailAccountIcon').src = account.icon;
+            document.getElementById('detailAccountIcon').alt = account.name;
+            document.getElementById('detailAccountName').textContent = account.name;
+            
+            // Calcular estadísticas
+            let totalIncome = 0;
+            let totalExpense = 0;
+            let balance = 0;
+            
+            account.transactions.forEach(transaction => {
+                balance += transaction.amount;
+                if (transaction.amount > 0) {
+                    totalIncome += transaction.amount;
+                } else {
+                    totalExpense += Math.abs(transaction.amount);
+                }
+            });
+            
+            // Actualizar estadísticas
+            document.getElementById('detailAccountBalance').textContent = `$ ${formatNumber(balance)}`;
+            document.getElementById('detailAccountBalance').className = `stat-value ${balance >= 0 ? 'positive' : 'negative'}`;
+            document.getElementById('detailAccountIncome').textContent = `$ ${formatNumber(totalIncome)}`;
+            document.getElementById('detailAccountExpense').textContent = `$ ${formatNumber(totalExpense)}`;
+            document.getElementById('detailTransactionCount').textContent = account.transactions.length;
+            
+            // Mostrar transacciones
+            const detailTransactions = document.getElementById('detailAccountTransactions');
+            
+            if (account.transactions.length > 0) {
+                const sortedTransactions = [...account.transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                detailTransactions.innerHTML = '';
+                sortedTransactions.slice(0, 10).forEach(transaction => { // Mostrar solo las últimas 10
+                    const amountClass = transaction.amount >= 0 ? 'positive' : 'negative';
+                    const amountSign = transaction.amount >= 0 ? '+' : '';
+                    const formattedDate = formatDate(transaction.date);
+                    
+                    const transactionElement = document.createElement('div');
+                    transactionElement.className = 'transaction-item';
+                    transactionElement.innerHTML = `
+                        <div class="transaction-info">
+                            <div class="transaction-concept">${transaction.concept}</div>
+                            <div class="transaction-date">${formattedDate}</div>
+                        </div>
+                        <div class="transaction-amount ${amountClass}">
+                            ${amountSign}$ ${formatNumber(transaction.amount)}
+                        </div>
+                    `;
+                    detailTransactions.appendChild(transactionElement);
+                });
+                
+                if (account.transactions.length > 10) {
+                    const moreElement = document.createElement('div');
+                    moreElement.style.textAlign = 'center';
+                    moreElement.style.padding = '10px';
+                    moreElement.style.color = '#666';
+                    moreElement.textContent = `...y ${account.transactions.length - 10} transacciones más`;
+                    detailTransactions.appendChild(moreElement);
+                }
+            } else {
+                detailTransactions.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exchange-alt"></i>
+                        <h3>No hay transacciones</h3>
+                        <p>Esta cuenta aún no tiene movimientos</p>
+                    </div>
+                `;
+            }
+            
+            // Mostrar modal
+            document.getElementById('accountDetailModal').classList.add('active');
+        }
+
+        function openTransactionModal() {
+            isEditing = false;
+            currentEditId = null;
+            document.getElementById('modalTitle').textContent = 'Nueva Transacción';
+            document.getElementById('submitTransactionBtn').textContent = 'Guardar';
+            document.getElementById('deleteTransactionBtn').style.display = 'none';
+            document.getElementById('transactionForm').reset();
+            document.getElementById('date').valueAsDate = new Date();
+            document.getElementById('transactionId').value = '';
+            document.getElementById('originalAccount').value = '';
+            document.getElementById('transactionModal').classList.add('active');
+        }
+
+        function editTransaction(accountKey, transactionId) {
+            const account = accounts[accountKey];
+            const transaction = account.transactions.find(t => t.id === transactionId);
+            
+            if (!transaction) return;
+            
+            isEditing = true;
+            currentEditId = transactionId;
+            
+            document.getElementById('modalTitle').textContent = 'Editar Transacción';
+            document.getElementById('submitTransactionBtn').textContent = 'Actualizar';
+            document.getElementById('deleteTransactionBtn').style.display = 'block';
+            
+            document.getElementById('transactionId').value = transactionId;
+            document.getElementById('originalAccount').value = accountKey;
+            document.getElementById('account').value = accountKey;
+            document.getElementById('type').value = transaction.type;
+            document.getElementById('amount').value = Math.abs(transaction.amount);
+            document.getElementById('concept').value = transaction.concept;
+            document.getElementById('date').value = transaction.date;
+            
+            document.getElementById('transactionModal').classList.add('active');
+        }
+
+        function addTransaction() {
+            const account = document.getElementById('account').value;
+            const type = document.getElementById('type').value;
+            const amount = parseFloat(document.getElementById('amount').value);
+            const concept = document.getElementById('concept').value;
+            const date = document.getElementById('date').value;
+            
+            if (!account || !type || !amount || !concept || !date) {
+                showNotification("Por favor completa todos los campos", "warning");
+                return;
+            }
+            
+            const transactionAmount = type === 'egreso' ? -amount : amount;
+            const newTransaction = {
+                id: Date.now(),
+                date: date,
+                concept: concept,
+                amount: transactionAmount,
+                type: type
+            };
+            
+            accounts[account].transactions.push(newTransaction);
+            saveData();
+            updateUI();
+            loadTransactions();
+            loadAccountsTab(); // Actualizar pestaña de cuentas
+            document.getElementById('transactionModal').classList.remove('active');
+            resetTransactionForm();
+            showNotification(`Transacción añadida a ${accounts[account].name}`, "success");
+        }
+
+        function updateTransaction() {
+            const transactionId = parseInt(document.getElementById('transactionId').value);
+            const originalAccount = document.getElementById('originalAccount').value;
+            const newAccount = document.getElementById('account').value;
+            const type = document.getElementById('type').value;
+            const amount = parseFloat(document.getElementById('amount').value);
+            const concept = document.getElementById('concept').value;
+            const date = document.getElementById('date').value;
+            
+            if (!newAccount || !type || !amount || !concept || !date) {
+                showNotification("Por favor completa todos los campos", "warning");
+                return;
+            }
+            
+            const transactionAmount = type === 'egreso' ? -amount : amount;
+            const updatedTransaction = {
+                id: transactionId,
+                date: date,
+                concept: concept,
+                amount: transactionAmount,
+                type: type
+            };
+            
+            if (originalAccount !== newAccount) {
+                accounts[originalAccount].transactions = accounts[originalAccount].transactions.filter(t => t.id !== transactionId);
+                accounts[newAccount].transactions.push(updatedTransaction);
+            } else {
+                const transactionIndex = accounts[originalAccount].transactions.findIndex(t => t.id === transactionId);
+                if (transactionIndex !== -1) {
+                    accounts[originalAccount].transactions[transactionIndex] = updatedTransaction;
+                }
+            }
+            
+            saveData();
+            updateUI();
+            loadTransactions();
+            loadAccountsTab(); // Actualizar pestaña de cuentas
+            document.getElementById('transactionModal').classList.remove('active');
+            resetTransactionForm();
+            showNotification(`Transacción actualizada`, "success");
+        }
+
+        function showDeleteConfirmation(accountKey, transactionId, concept) {
+            if (confirm(`¿Eliminar transacción "${concept}"?`)) {
+                deleteTransactionConfirmed(accountKey, transactionId);
+            }
+        }
+
+        function deleteTransactionConfirmed(accountKey, transactionId) {
+            const account = accounts[accountKey];
+            const transactionIndex = account.transactions.findIndex(t => t.id === transactionId);
+            
+            if (transactionIndex !== -1) {
+                account.transactions.splice(transactionIndex, 1);
+                saveData();
+                updateUI();
+                loadTransactions();
+                loadAccountsTab(); // Actualizar pestaña de cuentas
+                showNotification(`Transacción eliminada`, "success");
+            }
+        }
+
+        function deleteTransaction() {
+            const transactionId = parseInt(document.getElementById('transactionId').value);
+            const accountKey = document.getElementById('originalAccount').value;
+            deleteTransactionConfirmed(accountKey, transactionId);
+            document.getElementById('transactionModal').classList.remove('active');
+            resetTransactionForm();
+        }
+
+        function resetTransactionForm() {
+            isEditing = false;
+            currentEditId = null;
+            document.getElementById('transactionForm').reset();
+            document.getElementById('date').valueAsDate = new Date();
+            document.getElementById('transactionId').value = '';
+            document.getElementById('originalAccount').value = '';
+            document.getElementById('deleteTransactionBtn').style.display = 'none';
+        }
+
+        // Funciones de respaldo
+        function sendBackupByEmail() {
+            const csvData = generateCSVData();
+            const filename = `antologia_cuentas_${new Date().toISOString().slice(0,10)}.csv`;
+            
+            // Crear blob y URL
+            const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            
+            // Crear enlace para descargar
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Mostrar instrucciones para email
+            showNotification(
+                "Archivo CSV descargado. Ábrelo en tu app de email y envíalo a tu correo como adjunto.",
+                "info",
+                5000
+            );
+        }
+
+        function downloadBackup() {
+            const csvData = generateCSVData();
+            const filename = `antologia_cuentas_${new Date().toISOString().slice(0,10)}.csv`;
+            
+            const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification("Archivo CSV descargado", "success");
+        }
+
+        function generateCSVData() {
+            let csvContent = "Cuenta,Fecha,Concepto,Monto,Tipo\n";
+            
+            for (const accountKey in accounts) {
+                const account = accounts[accountKey];
+                account.transactions.forEach(transaction => {
+                    const tipo = transaction.amount >= 0 ? "Ingreso" : "Egreso";
+                    // Asegurar que la fecha se guarde en formato correcto (YYYY-MM-DD)
+                    const transactionDate = new Date(transaction.date);
+                    const formattedDate = transactionDate.toISOString().split('T')[0];
+                    csvContent += `"${account.name}","${formattedDate}","${transaction.concept}",${transaction.amount},"${tipo}"\n`;
+                });
+            }
+            
+            return csvContent;
+        }
+
+        function importFromFile() {
+            const fileInput = document.getElementById('backupFile');
+            if (fileInput.files.length === 0) {
+                showNotification("Selecciona un archivo primero", "warning");
+                return;
+            }
+            
+            if (!confirm("¿Importar datos? Esto reemplazará los datos actuales.")) {
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const content = e.target.result;
+                    const lines = content.split('\n');
+                    processCSVData(lines);
+                    clearFileInput();
+                    loadAccountsTab(); // Actualizar pestaña de cuentas
+                    showNotification("Datos importados correctamente", "success");
+                } catch (error) {
+                    console.error("Error al importar:", error);
+                    showNotification("Error al importar. Verifica el formato.", "danger");
+                }
+            };
+            
+            reader.readAsText(file);
+        }
+
+        function processCSVData(lines) {
+            // Limpiar transacciones actuales
+            for (const accountKey in accounts) {
+                accounts[accountKey].transactions = [];
+            }
+            
+            let startIndex = 0;
+            if (lines[0].toLowerCase().includes('cuenta')) {
+                startIndex = 1;
+            }
+            
+            for (let i = startIndex; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+                
+                // Parsear línea CSV, manejando comillas correctamente
+                const columns = parseCSVLine(line);
+                if (columns.length >= 4) {
+                    let cuenta = columns[0].trim();
+                    let fecha = columns[1].trim();
+                    const concepto = columns[2].trim();
+                    const monto = parseFloat(columns[3].trim());
+                    
+                    // Corregir problema de fecha (convertir a formato YYYY-MM-DD)
+                    fecha = fixDateFormat(fecha);
+                    
+                    // Determinar cuenta
+                    let accountKey = 'efectivo';
+                    if (cuenta.toLowerCase().includes('nequi')) accountKey = 'nequi';
+                    else if (cuenta.toLowerCase().includes('bancolombia')) accountKey = 'bancolombia';
+                    else if (cuenta.toLowerCase().includes('daviplata')) accountKey = 'daviplata';
+                    
+                    const transaction = {
+                        id: Date.now() + i,
+                        date: fecha,
+                        concept: concepto,
+                        amount: monto,
+                        type: monto >= 0 ? "ingreso" : "egreso"
+                    };
+                    
+                    accounts[accountKey].transactions.push(transaction);
+                }
+            }
+            
+            saveData();
+            updateUI();
+            loadTransactions();
+        }
+
+        function parseCSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current);
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            
+            result.push(current);
+            return result;
+        }
+
+        function fixDateFormat(dateString) {
+            // Si la fecha ya está en formato YYYY-MM-DD, dejarla así
+            if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+                return dateString;
+            }
+            
+            // Si está en formato DD/MM/YYYY o similar, convertirla
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) {
+                // Si no se puede parsear, devolver la fecha actual
+                return new Date().toISOString().split('T')[0];
+            }
+            
+            // Ajustar por problema de zona horaria (agregar un día si es necesario)
+            const correctedDate = new Date(date.getTime() + (24 * 60 * 60 * 1000));
+            
+            // Formatear como YYYY-MM-DD
+            const year = correctedDate.getFullYear();
+            const month = String(correctedDate.getMonth() + 1).padStart(2, '0');
+            const day = String(correctedDate.getDate()).padStart(2, '0');
+            
+            return `${year}-${month}-${day}`;
+        }
+
+        function clearFileInput() {
+            document.getElementById('backupFile').value = '';
+            document.getElementById('fileInfo').style.display = 'none';
+            document.getElementById('importBtn').disabled = true;
+        }
+
+        function saveData() {
+            localStorage.setItem('accountsData', JSON.stringify(accounts));
+        }
+
+        function formatNumber(number) {
+            return Math.abs(number).toLocaleString('es-CO');
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            // Usar fecha local para evitar problemas de zona horaria
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            
+            return `${day}/${month}/${year}`;
+        }
+
+        function showNotification(message, type = "info", duration = 3000) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            
+            let bgColor = "var(--primary-color)";
+            if (type === "success") bgColor = "var(--success-color)";
+            if (type === "warning") bgColor = "var(--warning-color)";
+            if (type === "danger") bgColor = "var(--danger-color)";
+            
+            notification.style.backgroundColor = bgColor;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, duration);
+        }
+    </script>
+</body>
+</html>
